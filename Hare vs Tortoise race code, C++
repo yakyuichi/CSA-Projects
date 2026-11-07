@@ -1,0 +1,157 @@
+#include <iostream>
+#include <ctime>
+#include <thread>
+#include <random>
+#include <string>
+
+using namespace std;
+
+//these lines are for the functions
+void moveHare( int *,  int);
+void moveTort( int *,  int);
+
+
+int main() 
+{
+    //these lines intialize variables that are used throughout the code
+   int track =70;
+    int hare=1;
+    int tort=1;
+    bool go = true;
+    
+    //These lines represent the beginning of the race
+    cout << "BANG!!!!!" << endl;
+    cout << "AND THEY ARE OFF!!!!!" << endl;
+
+    //These lines are used to generate a random number
+    random_device rd;
+    mt19937 gen(rd());
+    uniform_int_distribution<int> distrib(1, 10);
+    int randNumValue=distrib(gen);
+
+   
+
+    //I used a while loop to continuously run the program until it came back as false
+     while (go) {
+        
+    //these lines generate a random number for the moveHare and moveTort
+    int hareRandNum=distrib(gen);
+    int tortRandNum=distrib(gen);
+
+        //Calls the functions
+        moveTort(&tort,tortRandNum);
+        moveHare(&hare,hareRandNum);
+
+        //Creates a variable named map that is 70 spaces
+        string map(70,' ');
+
+            //if statement that checks if tort and hare have equal values
+          if (tort == hare) {
+            
+            //creates a variable that is tort-1
+            int pos = tort - 1;
+
+            //if statement that checks if the position is greater than zero AND less 70
+            if (pos >= 0 && pos < 70) {
+               
+               //if the condition is met then it replaces that position and prints "OUCH"
+                map.replace(pos, 70 - pos < 7 ? 70 - pos : 7, "OUCH!!!");
+            }
+        } else {
+            //if statements that make sure the contenders are still in play and prints their symbol in their position
+            if (tort >= 1 && tort <= 70) map[tort - 1] = 'T';
+            if (hare >= 1 && hare <= 70) map[hare - 1] = 'H';
+        }
+
+        cout << map << endl;
+        
+        //if statement that goes through the different possible scenarios and 
+        //if any are met then it changes 'go' to false
+        //otherwise the time will continue to tick
+        if(hare>=track&&tort<track){
+            cout<<"Hare Wins. Yuch.";
+            
+            go=false;
+            }
+        else if(tort>=track&&hare<track){
+            cout<<"TORTOISE WINS!!!YAY!!!";
+            go=false;
+           
+        }
+        else if(tort>=track&&hare>=track){
+            cout<<"It's a tie!";
+            go=false;
+            
+        }
+        else{
+        time_t now = time(0);
+        this_thread::sleep_for(chrono::seconds(1));
+    }
+    }
+
+    return 0;
+}
+//function to move the tortoise
+void moveTort( int * position,  int randomNumber){
+    
+    //checks the generated number to see which move to perform
+    //Then it changes the position value
+    if(randomNumber>=1&&randomNumber<=5){
+        cout<<"Tortoise: Fast Plod\n";
+        *position+=3;
+        
+    }
+    else if(randomNumber==6||randomNumber==7){
+        cout<<"Tortoise: Slips\n";
+        *position-=6;
+        if(*position<1){
+            *position=1;
+        }
+         
+    }
+    else{
+        cout<<"Tortoise: Slow pod\n";
+        *position+=1;
+        
+    }
+
+}
+
+//function to move the Hare
+void moveHare( int * position,  int randomNumber){
+    
+     //checks the generated number to see which move to perform
+    //Then it changes the position value
+    if(randomNumber>=1&&randomNumber<=2){
+        cout<<"Hare: Sleep\n";
+        *position+=0;
+         
+    }
+    else if(randomNumber>=3&&randomNumber<=4){
+        cout<<"Hare: Big Hop\n";
+        *position+=9;
+       
+    }
+    else if(randomNumber==5){
+        cout<<"Hare: Big Slip\n";
+        *position-=12;
+        if(*position<1){
+            *position=1;
+        }
+        
+    }
+    else if(randomNumber>=6&&randomNumber<=8){
+        cout<<"Hare: Small Hop\n";
+        *position+=1;
+        
+    }
+    else if(randomNumber<=9&&randomNumber<=10){
+        cout<<"Hare: Small Slip\n";
+        *position-=1;
+        if(*position<1){
+            *position=1;
+        }
+        
+    }
+    
+}
