@@ -1,0 +1,34 @@
+#include <iostream>
+using namespace std;
+
+class Account {
+public:
+    Account(double initialBalance) {
+        account = initialBalance;
+    }
+    void withdraw(const double &amount); 
+    void deposit(const double &amount);  
+    double balance();                    
+
+private:
+    double account;
+};
+
+void Account::withdraw(const double &amount) {
+    account=account-amount;
+}
+
+void Account::deposit(const double &amount) {
+    account=account+amount;
+}
+
+double Account::balance() {              
+    return account;
+}
+
+int main() {
+    Account myBank(36.2);
+     myBank.deposit(40);
+    cout << myBank.balance();
+    return 0;
+}
